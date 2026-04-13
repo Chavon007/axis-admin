@@ -11,4 +11,5 @@ export interface SignupDetails {
   confirmedPassword: string;
   hotelName: string;
   policy: boolean;
+  role: string;
 }

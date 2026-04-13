@@ -1,7 +1,7 @@
 import "./index.css";
-
+import AppRoutes from "./routes/appRoutes";
 function App() {
-  return <div className="bg-red-300">Home</div>;
+  return <AppRoutes />;
 }
 
 export default App;
