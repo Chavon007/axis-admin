@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import useAuth from "../../hooks/authHooks";
 import React, { useState } from "react";
 import type { LoginDetails } from "../../types/auth";
+import axislogo from "../../assets/AXIS.png";
 
 function LoginPage() {
   const { login, loading, error, success } = useAuth();
@@ -19,7 +20,6 @@ function LoginPage() {
     <div>
       <div>
         <article>
-          <img src="" alt="" />
           <h3>Sign in</h3>
           <small>Hotel management portal</small>
           <form onSubmit={handleSubmit}>
@@ -71,7 +71,7 @@ function LoginPage() {
             <p>
               <span>Don't have an account?</span>
               <span>
-                <Link to="">Register</Link>
+                <Link to="/signup">Register</Link>
               </span>
             </p>
 
@@ -81,7 +81,7 @@ function LoginPage() {
 
         {/* image */}
         <div>
-          <img src="" alt="axis logo" />
+          <img src={axislogo} alt="axis logo" />
         </div>
       </div>
     </div>
