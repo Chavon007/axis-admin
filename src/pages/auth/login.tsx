@@ -17,8 +17,8 @@ function LoginPage() {
     await login(formData);
   };
   return (
-    <div>
-      <div>
+    <div className="bg-black">
+      <div className="flex justify-between items-center">
         <article>
           <h3>Sign in</h3>
           <small>Hotel management portal</small>
