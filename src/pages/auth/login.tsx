@@ -99,16 +99,23 @@ function LoginPage() {
 
             {/* ERROR / SUCCESS */}
             {error && (
-              <p className="text-red-500 text-sm text-center">{error}</p>
+              <p className="text-red-500 text-sm text-center font-lato">
+                {error}
+              </p>
             )}
             {success && (
-              <p className="text-green-600 text-sm text-center">{success}</p>
+              <p className="text-green-600 text-sm font-lato text-center">
+                {success}
+              </p>
             )}
 
             {/* REGISTER */}
-            <p className="text-sm text-center text-gray-600">
+            <p className="text-sm text-center text-gray-600 font-montserra">
               Don’t have an account?{" "}
-              <Link to="/signup" className="text-black font-semibold">
+              <Link
+                to="/signup"
+                className="text-black font-lato text-xs font-semibold"
+              >
                 Register
               </Link>
             </p>
