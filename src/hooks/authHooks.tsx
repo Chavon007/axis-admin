@@ -4,6 +4,7 @@ import {
   supabaseLogin,
   supabaseSignout,
   getCurrentSession,
+  getProfile,
 } from "../services/authService";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store/store";
@@ -86,9 +87,16 @@ function useAuth() {
     }
     try {
       const data = await supabaseLogin(formData);
+      const profile = await getProfile(data.user.id);
       dispatch(
         setUser({
-          user: data.user as any,
+          user: {
+            ...profile,
+            firstName: profile.firstname,
+            lastName: profile.lastname,
+            hotelName: profile.Hotels.name,
+            hotelIamge: profile.Hotels.image,
+          } as any,
           token: data.session?.access_token ?? "",
         }),
       );
@@ -145,6 +153,15 @@ function useAuth() {
     }
   };
 
-  return { success, error, signup, loading, login, logout, verifyLoading, verifyAccount };
+  return {
+    success,
+    error,
+    signup,
+    loading,
+    login,
+    logout,
+    verifyLoading,
+    verifyAccount,
+  };
 }
 export default useAuth;

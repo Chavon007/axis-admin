@@ -55,3 +55,15 @@ export const getCurrentSession = async (): Promise<Session | null> => {
 
   return data.session;
 };
+
+export const getProfile = async (userId: string) => {
+  const { error, data } = await supabase
+    .from("profiles")
+    .select("*, Hotels(name, image)")
+    .eq("id", userId)
+    .single();
+
+  if (error) throw error;
+
+  return data;
+};

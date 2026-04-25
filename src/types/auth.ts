@@ -12,4 +12,6 @@ export interface SignupDetails {
   hotelName: string;
   policy: boolean;
   role: string;
+  avatar_url?: string;
+  hotelImage?: string;
 }
