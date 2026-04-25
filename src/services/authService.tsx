@@ -1,4 +1,5 @@
 import supabase from "../utils/supabaseClient";
+import type { Session } from "@supabase/supabase-js";
 import type { SignupDetails, LoginDetails } from "../types/auth";
 
 export const supabaseSignup = async ({
@@ -14,12 +15,12 @@ export const supabaseSignup = async ({
     email,
     password,
     options: {
+      emailRedirectTo: "http://localhost:5173/verify-account",
       data: {
-        firstName,
-        lastName,
-        email,
-        password,
-        hotelName,
+        firstname: firstName,
+        lastname: lastName,
+
+        hotelname: hotelName,
         policy,
         role,
       },
@@ -45,4 +46,12 @@ export const supabaseSignout = async () => {
   const { error } = await supabase.auth.signOut();
 
   if (error) throw error;
+};
+
+export const getCurrentSession = async (): Promise<Session | null> => {
+  const { error, data } = await supabase.auth.getSession();
+
+  if (error) throw error;
+
+  return data.session;
 };

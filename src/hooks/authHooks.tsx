@@ -3,6 +3,7 @@ import {
   supabaseSignup,
   supabaseLogin,
   supabaseSignout,
+  getCurrentSession,
 } from "../services/authService";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store/store";
@@ -13,13 +14,14 @@ import { useNavigate } from "react-router-dom";
 function useAuth() {
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
+  const [verifyLoading, setVerifyLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSucces] = useState("");
   const navigate = useNavigate();
 
   const passwordRegex =
     /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
-  const emailPattern = /^[^s@]+@[^s@]+\.[^s@]+$/;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   //   sign up
 
@@ -39,20 +41,24 @@ function useAuth() {
       !formDate.role
     ) {
       setError("Please fill all required fields");
+      setLoading(false);
       return;
     }
     if (formDate.password !== formDate.confirmedPassword) {
       setError("Password and confirmpassword does not match");
+      setLoading(false);
       return;
     }
     if (!passwordRegex.test(formDate.password)) {
       setError(
         "Password must include a uppercase, number, sysmbols and it must be 8 characterv long",
       );
+      setLoading(false);
       return;
     }
     if (!emailPattern.test(formDate.email)) {
       setError("Use a proper email address");
+      setLoading(false);
       return;
     }
     try {
@@ -103,11 +109,42 @@ function useAuth() {
       await supabaseSignout();
       dispatch(clearUser());
       setSucces("Signed out");
+      navigate("/login");
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  return { success, error, signup, loading, login, logout };
+  const verifyAccount = async () => {
+    setVerifyLoading(false);
+    setError("");
+    try {
+      const session = await getCurrentSession();
+
+      if (!session) {
+        setError("No active session found. Please verify your email first.");
+        return;
+      }
+      dispatch(
+        setUser({
+          user: session.user as any,
+          token: session.access_token,
+        }),
+      );
+
+      setSucces("Account verified successfully");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setVerifyLoading(false);
+    }
+  };
+
+  return { success, error, signup, loading, login, logout, verifyLoading, verifyAccount };
 }
 export default useAuth;
