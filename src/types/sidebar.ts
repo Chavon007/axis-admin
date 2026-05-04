@@ -10,4 +10,7 @@ export interface manageSideBarType {
   icon: ReactNode;
 }
 
-
+export type sideBarProps = {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+};

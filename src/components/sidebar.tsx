@@ -10,6 +10,8 @@ import useAuth from "../hooks/authHooks";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 import { LuHotel } from "react-icons/lu";
+import type { sideBarProps } from "../types/sidebar";
+
 const mainList: MainSideBarType[] = [
   {
     name: "Overview",
@@ -40,7 +42,7 @@ const manageList: manageSideBarType[] = [
   },
 ];
 
-function SideBar() {
+function SideBar({ activeTab, setActiveTab }: sideBarProps) {
   const user = useSelector((state: RootState) => state.auth.user);
   const { logout } = useAuth();
 
@@ -48,7 +50,7 @@ function SideBar() {
     <div>
       <section>
         {user?.hotelImage ? <img src={user.hotelImage} /> : <LuHotel />}
-        <img src="" alt="" />
+
         <h3>{user?.hotelName}</h3>
         <small>Live & acceping bookings</small>
       </section>
@@ -57,7 +59,11 @@ function SideBar() {
       {/* main */}
       <section>
         {mainList.map((main, index) => (
-          <button key={index}>
+          <button
+            onClick={() => setActiveTab(main.name)}
+            key={index}
+            className={activeTab === main.name ? "" : ""}
+          >
             <div>
               <span>{main.icon}</span>
               <span>{main.name}</span>
@@ -68,7 +74,11 @@ function SideBar() {
       {/* manage */}
       <section>
         {manageList.map((manageList, index) => (
-          <button key={index}>
+          <button
+            onClick={() => setActiveTab(manageList.name)}
+            key={index}
+            className={activeTab === manageList.name ? "" : ""}
+          >
             <div>
               <span>{manageList.icon}</span> <span>{manageList.name}</span>
             </div>
