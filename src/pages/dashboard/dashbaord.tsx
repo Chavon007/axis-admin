@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SideBar from "../../components/sidebar";
 import Navbar from "../../components/navbar";
+import Overview from "../main/overview";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("Overview");
@@ -13,9 +14,7 @@ function Dashboard() {
       <section>
         <SideBar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <main>
-            
-        </main>
+        <main>{activeTab === "Overview" && <Overview />}</main>
       </section>
     </div>
   );

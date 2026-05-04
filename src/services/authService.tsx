@@ -61,7 +61,7 @@ export const getProfile = async (userId: string) => {
     .from("profile")
     .select("*, Hotels(name, image)")
     .eq("id", userId)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
 
