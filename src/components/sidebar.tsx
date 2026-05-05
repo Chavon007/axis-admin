@@ -47,61 +47,109 @@ function SideBar({ activeTab, setActiveTab }: sideBarProps) {
   const { logout } = useAuth();
 
   return (
-    <div>
-      <section>
-        {user?.hotelImage ? <img src={user.hotelImage} /> : <LuHotel />}
+    <div className="w-[95%] mx-auto p-2 flex flex-col h-screen  gap-3 shadow-[4px_0_10px_rgb(253_230_138/0.4)] ">
+      <section className="bg-neutral-900 rounded rounded-1xl p-3 mt-2 max-w-70 h-25">
+        {user?.hotelImage ? (
+          <img className="w-[95%] mx-auto" src={user.hotelImage} />
+        ) : (
+          <LuHotel />
+        )}
 
-        <h3>{user?.hotelName}</h3>
-        <small>Live & acceping bookings</small>
+        <h3 className="text-2xl font-montserra text-white font-bold">
+          {user?.hotelName}
+        </h3>
+        <small className="text-xs text-gray-300 font-lato font-light italic ">
+          Live & acceping bookings
+        </small>
       </section>
       {/* divider */}
-      <div></div>
+      <div className="border border-amber-50"></div>
       {/* main */}
-      <section>
+      <section className="flex flex-col gap-5 p-2 justify-between">
         {mainList.map((main, index) => (
           <button
-            onClick={() => setActiveTab(main.name)}
             key={index}
-            className={activeTab === main.name ? "" : ""}
+            onClick={() => setActiveTab(main.name)}
+            className={`rounded-lg transition-all duration-200 ${
+              activeTab === main.name
+                ? "bg-amber-300 text-black"
+                : "bg-transparent text-white"
+            }`}
           >
-            <div>
-              <span>{main.icon}</span>
-              <span>{main.name}</span>
+            <div className="flex items-center cursor-pointer gap-2 p-2">
+              <span
+                className={`text-2xl hover:text-gray-400 ${
+                  activeTab === main.name ? "text-black" : "text-gray-300"
+                }`}
+              >
+                {main.icon}
+              </span>
+
+              <span className="text-base font-lato font-light hover:text-gray-400">
+                {main.name}
+              </span>
             </div>
           </button>
         ))}
       </section>
+
+      {/* divider */}
+      <div className="border border-amber-50"></div>
       {/* manage */}
-      <section>
+      <section className="flex flex-col gap-2 p-2 justify-between">
         {manageList.map((manageList, index) => (
           <button
             onClick={() => setActiveTab(manageList.name)}
             key={index}
-            className={activeTab === manageList.name ? "" : ""}
+            className={`rounded-lg transition-all duration-200 ${
+              activeTab === manageList.name
+                ? "bg-amber-300 text-black"
+                : "bg-transparent text-white"
+            }`}
           >
-            <div>
-              <span>{manageList.icon}</span> <span>{manageList.name}</span>
+            <div className="flex items-center cursor-pointer gap-2 p-2">
+              <span
+                className={`text-2xl hover:text-gray-400 ${
+                  activeTab === manageList.name ? "text-black" : "text-gray-300"
+                }`}
+              >
+                {manageList.icon}
+              </span>{" "}
+              <span className="text-base hover:text-gray-400 font-lato font-light">
+                {manageList.name}
+              </span>
             </div>
           </button>
         ))}
       </section>
 
+      {/* divider */}
+      <div className="border border-amber-50"></div>
       {/* profile */}
-      <section>
-        <div>
+      <section className=" flex justify-center gap-2">
+        <div className="bg-neutral-900 rounded-2xl uppercase text-2xl text-amber-50 font-lato font-bold">
           {user?.firstName.charAt(0).toUpperCase()}
           {user?.lastName.charAt(0).toUpperCase()}
         </div>
         <div>
           <h3>
-            <span>{user?.firstName}</span> <span>{user?.lastName}</span>
+            <span className="text-base font-montserra text-white font-bold">
+              {user?.firstName}
+            </span>{" "}
+            <span>{user?.lastName}</span>
           </h3>
-          <small>Hotel Owner</small>
+          <small className="text-xs text-gray-300 font-lato font-light italic">
+            Hotel Owner
+          </small>
         </div>
       </section>
-
-      <section>
-        <button type="button" onClick={logout}>
+      {/* divider */}
+      <section className=" ">
+        <button
+          className="flex font-montserra cursor-pointer hover:bg-neutral-500 text-sm w-40 bg-neutral-900  mx-auto text-gray-300 items-center gap-2  p-2 rounded"
+          type="button"
+          onClick={logout}
+        >
           <FaSignOutAlt /> <p>Sign out</p>
         </button>
       </section>

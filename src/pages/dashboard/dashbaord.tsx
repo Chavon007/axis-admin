@@ -6,15 +6,17 @@ import Overview from "../main/overview";
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("Overview");
   return (
-    <div>
-      <section>
-        <Navbar activeTab={activeTab} />
+    <div className="bg-black min-h-screen  flex justify-between h-auto">
+      <section className="w-[15%] ">
+        <SideBar activeTab={activeTab} setActiveTab={setActiveTab} />
       </section>
 
-      <section>
-        <SideBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <section className="w-[85%]  flex flex-col gap-2">
+        <div className="shadow-[4px_0_10px_rgb(253_230_138/0.4)]">
+          <Navbar activeTab={activeTab} />
+        </div>
 
-        <main>{activeTab === "Overview" && <Overview />}</main>
+        <main className="mt-7">{activeTab === "Overview" && <Overview />}</main>
       </section>
     </div>
   );

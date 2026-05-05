@@ -42,13 +42,16 @@ function StatCard() {
   //   revenue,
   // }: statCardProps
   return (
-    <div>
+    <div className="grid grid-cols-4 w-[90%] mx-auto gap-2">
       {statcard.map((s, index) => (
-        <div key={index}>
-          {s.icon}
-          <h5>{s.title}</h5>
-          <p>{s.number}</p>
-          <small>{s.info}</small>
+        <div
+          className="bg-neutral-800 rounded h-35 flex shadow-gray-200  shadow flex-col justify-center gap-3 items-center "
+          key={index}
+        >
+          <div className="text-gray-300 font-bold text-2xl">{s.icon}</div>
+          <h5 className="text-base font-bold font-montserra text-amber-100">{s.title}</h5>
+          <p className="text-3xl font-lato font-semibold text-gray-300">{s.number}</p>
+          <small className="font-lato font-light italic text-xs text-gray-200">{s.info}</small>
         </div>
       ))}
     </div>
