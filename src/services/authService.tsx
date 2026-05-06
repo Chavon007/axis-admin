@@ -58,10 +58,10 @@ export const getCurrentSession = async (): Promise<Session | null> => {
 
 export const getProfile = async (userId: string) => {
   const { error, data } = await supabase
-    .from("profiles")
+    .from("profile")
     .select("*, Hotels(name, image)")
     .eq("id", userId)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
 

@@ -88,18 +88,33 @@ function useAuth() {
     try {
       const data = await supabaseLogin(formData);
       const profile = await getProfile(data.user.id);
-      dispatch(
-        setUser({
-          user: {
-            ...profile,
-            firstName: profile.firstname,
-            lastName: profile.lastname,
-            hotelName: profile.Hotels.name,
-            hotelIamge: profile.Hotels.image,
-          } as any,
-          token: data.session?.access_token ?? "",
-        }),
-      );
+
+      if (!profile) {
+        dispatch(
+          setUser({
+            user: {
+              firstName: "",
+              lastName: "",
+              hotelName: null,
+              hotelImage: null,
+            } as any,
+            token: data.session?.access_token ?? "",
+          }),
+        );
+      } else {
+        dispatch(
+          setUser({
+            user: {
+              ...profile,
+              firstName: profile.firstname,
+              lastName: profile.lastname,
+              hotelName: profile.Hotels?.name ?? null,
+              hotelImage: profile.Hotels?.image ?? null,
+            } as any,
+            token: data.session?.access_token ?? "",
+          }),
+        );
+      }
 
       setSucces("Login successfull");
       setTimeout(() => {
