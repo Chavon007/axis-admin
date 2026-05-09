@@ -1,5 +1,5 @@
 export interface createHotel {
-  image: string;
+  image: string | File;
   hotelName: string;
   rating: string;
   address: string;
@@ -10,4 +10,5 @@ export interface createHotel {
   acceptingBooking: boolean;
   bookingApproval: boolean;
   created_by: string;
+  instantBooking: boolean;
 }
