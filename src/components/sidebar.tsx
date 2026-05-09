@@ -47,7 +47,7 @@ function SideBar({ activeTab, setActiveTab }: sideBarProps) {
   const { logout } = useAuth();
 
   return (
-    <div className="w-[95%] mx-auto p-2 flex flex-col h-screen  gap-3 shadow-[4px_0_10px_rgb(253_230_138/0.4)] ">
+    <div className="w-[95%] mx-auto p-2 flex flex-col h-screen   gap-3 shadow-[4px_0_10px_rgb(253_230_138/0.4)] ">
       <section className="bg-neutral-900 rounded rounded-1xl p-3 mt-2 max-w-70 h-25">
         {user?.hotelImage ? (
           <img className="w-[95%] mx-auto" src={user.hotelImage} />
