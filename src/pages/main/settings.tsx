@@ -4,11 +4,13 @@ import { SettingsButton } from "../../components/settingsbutton";
 export function Settings() {
   const [activeTab, setActiveTab] = useState("Hotel Profile");
   return (
-    <div>
-      <section>
+    <div className=" flex justify-between">
+      <section className="w-[30%] p-2 ">
         <SettingsButton activeTab={activeTab} setActiveTab={setActiveTab} />
       </section>
-      <section>{activeTab === "Hotel Profile" && <CreateHotel />}</section>
+      <section className="w-[65%] mx-auto">
+        {activeTab === "Hotel Profile" && <CreateHotel />}
+      </section>
     </div>
   );
 }
