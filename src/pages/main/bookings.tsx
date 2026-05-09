@@ -60,11 +60,11 @@ const dummyBookings = [
 ];
 function Bookings() {
   const [activeFilter, setActiveFilter] = useState("All");
-//   const { fetchBooking, loading, error, bookings } = useBooking();
+  //   const { fetchBooking, loading, error, bookings } = useBooking();
 
-//   useEffect(() => {
-//     fetchBooking();
-//   }, []);
+  //   useEffect(() => {
+  //     fetchBooking();
+  //   }, []);
 
   //   const handleBookingFilter = bookings?.filter((b) =>
   //     activeFilter === "All" ? true : b.status === activeFilter,
@@ -73,33 +73,33 @@ function Bookings() {
   const handleBookingFilter = dummyBookings?.filter((b) =>
     activeFilter === "All" ? true : b.status === activeFilter,
   );
-//   if (loading) return <p>loading...</p>;
+  //   if (loading) return <p>loading...</p>;
 
-//   if (error) return <p>{error}</p>;
-//   if (!bookings) return <p className="text-white">No bookings found</p>;
+  //   if (error) return <p>{error}</p>;
+  //   if (!bookings) return <p className="text-white">No bookings found</p>;
 
   return (
-    <div className="bg-red-200 min-h-screen">
-      <section>
+    <div className=" min-h-screen w-[90%] mx-auto h-auto flex flex-col gap-2 p-2">
+      <section className=" p-2 max-w-135">
         <BookingFilter
           activeFilter={activeFilter}
           setActiveFilter={setActiveFilter}
         />
       </section>
 
-      <section>
-        <table>
-          <thead>
-            <tr>
+      <section className="mt-2 h-50 border border-amber-100">
+        <table className="w-full p-2">
+          <thead className="border-b  border-amber-100 p-3 text-base font-montserra font-semibold text-neutral-400">
+            <tr className="">
               {bookingHedaer.map((h) => (
                 <th key={h.title}>{h.title}</th>
               ))}
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="">
             {handleBookingFilter?.length === 0 ? (
-              <tr>
+              <tr className="">
                 <td colSpan={9}>
                   <TbHourglassEmpty />
                   <p>No active booking yet</p>
@@ -116,8 +116,5 @@ function Bookings() {
     </div>
   );
 }
-
-
-
 
 export default Bookings;
