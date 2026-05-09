@@ -6,7 +6,9 @@ import { setBooking, setError, setLoading } from "../store/slices/bookingSlice";
 export function useBooking() {
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.auth.token);
-
+  const loading = useSelector((state: RootState) => state.booking.loading);
+  const error = useSelector((state: RootState) => state.booking.error);
+  const bookings = useSelector((state: RootState) => state.booking.bookings);
   const fetchBooking = async () => {
     dispatch(setLoading(true));
     try {
@@ -19,5 +21,5 @@ export function useBooking() {
     }
   };
 
-  return { fetchBooking };
+  return { fetchBooking, loading, error, bookings };
 }

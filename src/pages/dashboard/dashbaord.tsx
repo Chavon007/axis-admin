@@ -3,7 +3,7 @@ import SideBar from "../../components/sidebar";
 import Navbar from "../../components/navbar";
 import Overview from "../main/overview";
 import { Settings } from "../main/settings";
-
+import Bookings from "../main/bookings";
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("Overview");
   return (
@@ -20,6 +20,7 @@ function Dashboard() {
         <main className="mt-7">
           {activeTab === "Overview" && <Overview />}
           {activeTab === "Settings" && <Settings />}
+          {activeTab === "Bookings" && <Bookings />}
         </main>
       </section>
     </div>
