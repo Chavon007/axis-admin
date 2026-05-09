@@ -21,4 +21,11 @@ export interface fetchBookings {
   amount: string;
   status: string;
   action: string;
+  checkedIn: string;
+  checkedOut: string;
+}
+
+export interface filterBooking {
+  activeFilter: string;
+  setActiveFilter: (filter: string) => void;
 }
