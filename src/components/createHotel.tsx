@@ -234,7 +234,7 @@ export function CreateHotel() {
                 })
               }
             >
-              {formData.visibility ? (
+              {formData.acceptingBooking ? (
                 <FaToggleOn className="text-amber-400 " />
               ) : (
                 <FaToggleOff className="text-amber-300 " />

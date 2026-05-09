@@ -12,3 +12,13 @@ export interface createHotel {
   created_by: string;
   instantBooking: boolean;
 }
+
+export interface fetchBookings {
+  bookingId: string;
+  guest: string;
+  room: string;
+  nights: string;
+  amount: string;
+  status: string;
+  action: string;
+}
