@@ -4,6 +4,7 @@ import Navbar from "../../components/navbar";
 import Overview from "../main/overview";
 import { Settings } from "../main/settings";
 import Bookings from "../main/bookings";
+import Rooms from "../main/room";
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("Overview");
   return (
@@ -21,6 +22,7 @@ function Dashboard() {
           {activeTab === "Overview" && <Overview />}
           {activeTab === "Settings" && <Settings />}
           {activeTab === "Bookings" && <Bookings />}
+          {activeTab === "Rooms" && <Rooms/>}
         </main>
       </section>
     </div>
