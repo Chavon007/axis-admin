@@ -8,7 +8,7 @@ const adminRoomSeedData = [
     roomId: "bp-dlx-1",
     roomType: "deluxe",
     status: "available",
-    amount: "₦125,000/night",
+    amount: "₦125,000",
     photo: [
       "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80",
       "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=800&q=80",
@@ -32,7 +32,7 @@ const adminRoomSeedData = [
     roomId: "bp-dlx-2",
     roomType: "deluxe",
     status: "occupied",
-    amount: "₦125,000/night",
+    amount: "₦125,000",
     photo: [
       "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&q=80",
       "https://images.unsplash.com/photo-1591088398332-8596b4c8b4fc?w=800&q=80",
@@ -55,7 +55,7 @@ const adminRoomSeedData = [
     roomId: "bp-dlx-3",
     roomType: "deluxe",
     status: "maintenance",
-    amount: "₦125,000/night",
+    amount: "₦125,000",
     photo: [
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&q=80",
       "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80",
@@ -76,7 +76,7 @@ const adminRoomSeedData = [
     roomId: "bp-sdlx-4",
     roomType: "semi-deluxe",
     status: "available",
-    amount: "₦85,000/night",
+    amount: "₦85,000",
     photo: [
       "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&q=80",
       "https://images.unsplash.com/photo-1564078516393-cf04bd966897?w=800&q=80",
@@ -98,7 +98,7 @@ const adminRoomSeedData = [
     roomId: "bp-sdlx-5",
     roomType: "semi-deluxe",
     status: "occupied",
-    amount: "₦85,000/night",
+    amount: "₦85,000",
     photo: [
       "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80",
       "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&q=80",
@@ -119,7 +119,7 @@ const adminRoomSeedData = [
     roomId: "bp-sdlx-6",
     roomType: "semi-deluxe",
     status: "maintenance",
-    amount: "₦85,000/night",
+    amount: "₦85,000",
     photo: [
       "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800&q=80",
       "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&q=80",
@@ -140,7 +140,7 @@ const adminRoomSeedData = [
     roomId: "bp-std-7",
     roomType: "standard",
     status: "available",
-    amount: "₦55,000/night",
+    amount: "₦55,000",
     photo: [
       "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800&q=80",
       "https://images.unsplash.com/photo-1586105251261-72a756497a11?w=800&q=80",
@@ -160,7 +160,7 @@ const adminRoomSeedData = [
     roomId: "bp-std-8",
     roomType: "standard",
     status: "available",
-    amount: "₦55,000/night",
+    amount: "₦55,000",
     photo: [
       "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80",
       "https://images.unsplash.com/photo-1562438668-bcf0ca6578f0?w=800&q=80",
@@ -180,7 +180,7 @@ const adminRoomSeedData = [
     roomId: "bp-std-9",
     roomType: "standard",
     status: "occupied",
-    amount: "₦55,000/night",
+    amount: "₦55,000",
     photo: [
       "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=800&q=80",
       "https://images.unsplash.com/photo-1505692952047-1a78307da8f2?w=800&q=80",
@@ -201,7 +201,7 @@ const adminRoomSeedData = [
     roomId: "bp-std-10",
     roomType: "standard",
     status: "maintenance",
-    amount: "₦55,000/night",
+    amount: "₦55,000",
     photo: [
       "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&q=80",
       "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800&q=80",
@@ -236,9 +236,9 @@ export function Rooms() {
         />
       </section>
 
-      <section className="bg-red-500">
+      <section className=" grid grid-cols-3 gap-3">
         {handleRoomFilter?.length === 0 ? (
-          <div className="grid grid-cols-3 gap-2">
+          <div className="">
             <small>
               <FcEmptyFilter />
             </small>
