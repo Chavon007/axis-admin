@@ -33,14 +33,37 @@ export const saveRooomToDb = createAsyncThunk(
       const data = await sendData.json();
       return {
         data,
-        tempId: roomData.tempId,
+        tempId: roomData.id,
       };
     } catch (error: any) {
-      return rejectWithValue({ error: error.message, tempId: roomData.tempId });
+      return rejectWithValue({ error: error.message, tempId: roomData.id });
     }
   },
 );
 
+export const updateRoomToSb = createAsyncThunk(
+  "rooms/updateRoomToDb",
+  async (roomData: RoomDetails & { tempId: string }, { rejectWithValue }) => {
+    try {
+      const updateData = await fetch("", {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(roomData),
+      });
+
+      const data = await updateData.json();
+      return {
+        data,
+        tempId: roomData.id,
+      };
+    } catch (err: any) {
+      return rejectWithValue({ err: err.message, tempId: roomData.id });
+    }
+  },
+);
 const roomSlice = createSlice({
   name: "rooms",
   initialState,
@@ -55,8 +78,18 @@ const roomSlice = createSlice({
       state.error = action.payload;
     },
 
-    addNewRoom: (state, action) => {
-      state.rooms?.push(action.payload);
+    addNewRoom: (state, action: PayloadAction<RoomDetails>) => {
+      if (state.rooms === null) {
+        state.rooms = [action.payload];
+      } else {
+        state.rooms?.push(action.payload);
+      }
+    },
+    editRoom: (state, action: PayloadAction<RoomDetails>) => {
+      const index = state.rooms?.findIndex((r) => r.id === action.payload.id);
+      if (index !== undefined && index !== -1 && state.rooms) {
+        state.rooms[index] = action.payload;
+      }
     },
 
     replaceRoom: (state, action) => {
@@ -87,6 +120,23 @@ const roomSlice = createSlice({
       .addCase(saveRooomToDb.rejected, (state, action: any) => {
         state.loading = false;
         state.error = action.payload?.error ?? "Failed to save room";
+      })
+      .addCase(updateRoomToSb.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateRoomToSb.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.rooms?.findIndex(
+          (r) => r.id === action.payload.tempId,
+        );
+        if (index !== undefined && index !== -1 && state.rooms) {
+          state.rooms[index] = action.payload.data;
+        }
+      })
+      .addCase(updateRoomToSb.rejected, (state, action: any) => {
+        state.loading = false;
+        state.error = action.payload?.error ?? "Failed to update room";
       });
   },
 });
@@ -97,6 +147,7 @@ export const {
   setError,
   setLoading,
   setRoom,
+  editRoom,
   replaceRoom,
 } = roomSlice.actions;
 export default roomSlice.reducer;
