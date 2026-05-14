@@ -19,7 +19,7 @@ const initialState: roomState = {
 
 export const saveRooomToDb = createAsyncThunk(
   "rooms/saveRoomToDb",
-  async (roomData: RoomDetails & { tempId: string }, { rejectWithValue }) => {
+  async (roomData: RoomDetails & { tempId?: string }, { rejectWithValue }) => {
     try {
       const sendData = await fetch("http//:localhost:5000", {
         method: "POST",
@@ -41,9 +41,9 @@ export const saveRooomToDb = createAsyncThunk(
   },
 );
 
-export const updateRoomToSb = createAsyncThunk(
+export const updateRoomToDb = createAsyncThunk(
   "rooms/updateRoomToDb",
-  async (roomData: RoomDetails & { tempId: string }, { rejectWithValue }) => {
+  async (roomData: RoomDetails & { tempId?: string }, { rejectWithValue }) => {
     try {
       const updateData = await fetch("", {
         method: "PUT",
@@ -121,11 +121,11 @@ const roomSlice = createSlice({
         state.loading = false;
         state.error = action.payload?.error ?? "Failed to save room";
       })
-      .addCase(updateRoomToSb.pending, (state) => {
+      .addCase(updateRoomToDb.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateRoomToSb.fulfilled, (state, action) => {
+      .addCase(updateRoomToDb.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.rooms?.findIndex(
           (r) => r.id === action.payload.tempId,
@@ -134,7 +134,7 @@ const roomSlice = createSlice({
           state.rooms[index] = action.payload.data;
         }
       })
-      .addCase(updateRoomToSb.rejected, (state, action: any) => {
+      .addCase(updateRoomToDb.rejected, (state, action: any) => {
         state.loading = false;
         state.error = action.payload?.error ?? "Failed to update room";
       });

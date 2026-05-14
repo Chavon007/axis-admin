@@ -2,7 +2,8 @@ import { useState } from "react";
 import RoomCard from "../../components/roomCard";
 import RoomFilter from "../../components/roomFilter";
 import { FcEmptyFilter } from "react-icons/fc";
-
+import type { RoomDetails } from "../../types/room";
+import RoomForm from "../../components/roomForm";
 const adminRoomSeedData = [
   {
     roomId: "bp-dlx-1",
@@ -221,7 +222,21 @@ const adminRoomSeedData = [
 
 export function Rooms() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [showForm, setShowForm] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<RoomDetails | null>(null);
+  const [mode, setMode] = useState<"Add" | "Edit">("Add");
 
+  const handleEdit = (room: RoomDetails) => {
+    setSelectedRoom(room);
+    setMode("Edit");
+    setShowForm(true);
+  };
+
+  const handleAdd = () => {
+    setSelectedRoom(null);
+    setMode("Add");
+    setShowForm(true);
+  };
   const handleRoomFilter = adminRoomSeedData?.filter((r) =>
     activeFilter === "All"
       ? true
@@ -246,10 +261,15 @@ export function Rooms() {
           </div>
         ) : (
           handleRoomFilter?.map((rooms) => (
-            <RoomCard key={rooms.roomId} {...rooms} />
+            <RoomCard key={rooms.roomId} {...rooms} onEdit={handleEdit} />
           ))
         )}
       </section>
+
+
+      {showForm &&(
+        <RoomForm mode={mode} roomData={selectedRoom ?? undefined} onClose={() => setShowForm(false)} />
+      )}
     </div>
   );
 }

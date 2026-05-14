@@ -1,15 +1,16 @@
-import type { roomCardProps } from "../types/room";
+import type { RoomCardData} from "../types/room";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 export function RoomCard({
-  status,
+   status,
   roomId,
   amount,
   photo,
   roomType,
   description,
   amenities,
-}: roomCardProps) {
+  onEdit,
+}: RoomCardData){
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 2000, stopOnInteraction: false }),
   ]);
@@ -70,7 +71,20 @@ export function RoomCard({
       </section>
 
       <section className="p-4 pt-0 mt-auto">
-        <button className="w-full bg-amber-500 hover:bg-amber-400 text-black text-sm font-medium py-2 rounded-lg transition">
+        <button
+          className="w-full bg-amber-500 hover:bg-amber-400 text-black text-sm font-medium py-2 rounded-lg transition"
+          onClick={() =>
+            onEdit({
+              status,
+              roomId,
+              amount,
+              photo,
+              roomType,
+              description,
+              amenities,
+            } as any)
+          }
+        >
           Edit Room
         </button>
       </section>
