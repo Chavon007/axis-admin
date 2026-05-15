@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
+import { MdQrCodeScanner } from "react-icons/md";
+import { FiCamera } from "react-icons/fi";
 
 interface QRScannerProps {
   onScan: (decodedText: string) => void;
@@ -39,7 +41,7 @@ function QRScanner({ onScan }: QRScannerProps) {
     <div>
       <div>
         <h3>Scan Guest QR Code</h3>
-        <MMdQrCodeScanner />
+        <MdQrCodeScanner />
       </div>
       {/* camera box */}
       <div className="relative rounded-xl overflow-hidden border-2 border-amber-400/50 shadow-[0_0_20px_rgba(253,230,138,0.15)]">
