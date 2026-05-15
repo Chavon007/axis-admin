@@ -9,8 +9,22 @@ interface RoomFormProps {
   roomData?: RoomDetails;
   onClose: () => void;
 }
+
+const AMENITIES_LIST = [
+  "Air Conditioning",
+  "Free Wi-Fi",
+  "Smart TV",
+  "Mini Fridge",
+  "Room Service",
+  "Balcony View",
+  "King Size Bed",
+  "Hot Water",
+  "Wardrobe",
+];
+
 function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
   const { addRoom, editRoom, loading, error } = useRoom();
+
   const [formData, setFormData] = useState<RoomDetails>({
     id: roomData?.id ?? "",
     hotel_id: roomData?.hotel_id ?? "",
@@ -23,45 +37,55 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
     roomType: roomData?.roomType ?? "deluxe",
     amount: roomData?.amount ?? "",
     description: roomData?.description ?? "",
-    amenities: roomData?.amenities ?? false,
+    amenities: roomData?.amenities ?? [],
     photo: roomData?.photo ?? [],
   });
 
+  //separate state for amenities checkboxes
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
+    roomData?.amenities ?? []
+  );
+
+  // separate state for image files (just for preview)
   const [images, setImages] = useState<File[]>([]);
-  const [validationError, setValidationError] = useState<string | []>("");
+
+  const [validationError, setValidationError] = useState("");
+
+  //  simple toggle — if already in list remove it, if not add it
+  const handleAmenityToggle = (amenity: string) => {
+    setSelectedAmenities((prev) =>
+      prev.includes(amenity)
+        ? prev.filter((a) => a !== amenity)
+        : [...prev, amenity]
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      !formData.amenities ||
-      !formData.amount ||
-      !formData.description ||
-      !formData.photo ||
-      !formData.roomType ||
-      !formData.beds ||
-      !formData.floor ||
-      !formData.size ||
-      !formData.maxGuests ||
-      !formData.photo ||
-      !formData.id
-    ) {
+
+    if (!formData.amount || !formData.description || !formData.id) {
       setValidationError("Please fill all required fields");
       return;
     }
+
+    //  merge selectedAmenities into formData before submitting
+    const finalData = { ...formData, amenities: selectedAmenities };
+
     if (mode === "Add") {
-      await addRoom(formData);
+      await addRoom(finalData);
     } else {
-      await editRoom(formData.id, formData);
+      await editRoom(finalData.id, finalData);
     }
     onClose();
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <section>
           <div>
             <h4>{mode === "Add" ? "Add New Room" : "Edit Room"}</h4>
-            <IoIosClose />
+            <IoIosClose onClick={onClose} />
           </div>
         </section>
 
@@ -77,6 +101,7 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
           <label>
             Floor
             <input
+              type="number"
               value={formData.floor}
               onChange={(e) =>
                 setFormData({ ...formData, floor: Number(e.target.value) })
@@ -87,7 +112,7 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
 
         <section>
           <label>
-            <h3>Room Type</h3>
+            Room Type
             <select
               value={formData.roomType}
               onChange={(e) =>
@@ -98,13 +123,14 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
               }
             >
               <option value="deluxe">Deluxe</option>
-              <option value="semi-deluxe">Semi-deluxe</option>
+              <option value="semi-deluxe">Semi-Deluxe</option>
               <option value="standard">Standard</option>
             </select>
           </label>
           <label>
-            <h3>Max Guests</h3>
+            Max Guests
             <input
+              type="number"
               value={formData.maxGuests}
               onChange={(e) =>
                 setFormData({ ...formData, maxGuests: Number(e.target.value) })
@@ -115,7 +141,7 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
 
         <section>
           <label>
-            <h3>Price / night</h3>
+            Price / night
             <input
               type="text"
               value={formData.amount}
@@ -125,7 +151,7 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
             />
           </label>
           <label>
-            <h3>Status</h3>
+            Status
             <select
               value={formData.status}
               onChange={(e) =>
@@ -144,160 +170,70 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
 
         <section>
           <label>
-            <h3>Description</h3>
+            Description
             <textarea
-              name=""
               value={formData.description}
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-            ></textarea>
+            />
           </label>
         </section>
 
+        {/*  Amenities — simple toggle */}
         <section>
           <h3>Amenities</h3>
           <div>
-            <label>
-              <input
-                checked={formData.amenities}
-                onChange={(e) =>
-                  setFormData({ ...formData, amenities: e.target.checked })
-                }
-              />
-              <h5>Air Conditioning</h5>
-            </label>
-
-            <label>
-              <input
-                checked={formData.amenities}
-                onChange={(e) =>
-                  setFormData({ ...formData, amenities: e.target.checked })
-                }
-              />
-              <h5>Free Wi-Fi</h5>
-            </label>
-
-            <label>
-              <input
-                checked={formData.amenities}
-                onChange={(e) =>
-                  setFormData({ ...formData, amenities: e.target.checked })
-                }
-              />
-              <h5>Smart TV</h5>
-            </label>
-
-            <label>
-              <input
-                checked={formData.amenities}
-                onChange={(e) =>
-                  setFormData({ ...formData, amenities: e.target.checked })
-                }
-              />
-              <h5>Mini Fridge</h5>
-            </label>
-
-            <label>
-              <input
-                checked={formData.amenities}
-                onChange={(e) =>
-                  setFormData({ ...formData, amenities: e.target.checked })
-                }
-              />
-              <h5>Room Service</h5>
-            </label>
-
-            <label>
-              <input
-                checked={formData.amenities}
-                onChange={(e) =>
-                  setFormData({ ...formData, amenities: e.target.checked })
-                }
-              />
-              <h5>Balcony View</h5>
-            </label>
-
-            <label>
-              <input
-                checked={formData.amenities}
-                onChange={(e) =>
-                  setFormData({ ...formData, amenities: e.target.checked })
-                }
-              />
-              <h5>King Size Bed</h5>
-            </label>
-
-            <label>
-              <input
-                checked={formData.amenities}
-                onChange={(e) =>
-                  setFormData({ ...formData, amenities: e.target.checked })
-                }
-              />
-              <h5>Hot Water</h5>
-            </label>
-
-            <label>
-              <input
-                checked={formData.amenities}
-                onChange={(e) =>
-                  setFormData({ ...formData, amenities: e.target.checked })
-                }
-              />
-              <h5>Wardrobe</h5>
-            </label>
+            {AMENITIES_LIST.map((amenity) => (
+              <label key={amenity}>
+                <input
+                  type="checkbox"
+                  checked={selectedAmenities.includes(amenity)}
+                  onChange={() => handleAmenityToggle(amenity)}
+                />
+                <span>{amenity}</span>
+              </label>
+            ))}
           </div>
         </section>
 
+        {/* Photos — files just for preview, not stored in formData */}
         <section>
           <label>
-            <h3>Room Photos</h3>
-
+            Room Photos
             <div>
               <CiImageOn size={24} />
-              <p className="text-sm">Upload hotel cover photo</p>
-              <small className="text-gray-400 text-xs">
-                Recommended: 1200 × 400px
-              </small>
+              <p>Upload room photos</p>
               <input
                 type="file"
                 multiple
                 accept="image/*"
                 onChange={(e) => {
                   const files = Array.from(e.target.files || []);
-
-                  setImages((prev) => [...prev, ...files]);
-
-                  setFormData({
-                    ...formData,
-                    photo: [...formData.photo, ...files],
-                  });
+                  setImages((prev) => [...prev, ...files]); // ✅ preview only
                 }}
               />
             </div>
           </label>
 
           <div>
-            {images.map((i, index) => (
-              <img key={index} src={URL.createObjectURL(i)} />
+            {images.map((img, index) => (
+              <img key={index} src={URL.createObjectURL(img)} alt={`preview ${index}`} />
             ))}
           </div>
         </section>
 
         <section>
-          <button>{loading ? "Canceling..." : "Camcel"}</button>
-          <button>
-            {loading
-              ? "Saving..."
-              : mode === "Add"
-                ? "Add Room"
-                : "Updating room"}
+          <button type="button" onClick={onClose}>
+            Cancel
+          </button>
+          <button type="submit">
+            {loading ? "Saving..." : mode === "Add" ? "Add Room" : "Update Room"}
           </button>
         </section>
 
-        {error && <p>{error}</p>}
         {validationError && <p>{validationError}</p>}
+        {error && <p>{error}</p>}
       </form>
     </div>
   );
