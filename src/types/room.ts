@@ -16,18 +16,11 @@ export interface RoomDetails {
   status: "available" | "occupied" | "maintenance";
   roomType: "deluxe" | "semi-deluxe" | "standard";
   amount: string;
-  photo: File[];
+  photo: string[];
   description: string;
-  amenities: boolean;
+  amenities: string[];
 }
 
-export type RoomCardData = {
-  status: "available" | "occupied" | "maintenance";
-  roomId: string;
-  roomType: "deluxe" | "semi-deluxe" | "standard";
-  amount: string;
-  photo: string[];        
-  description: string;
-  amenities: string[];    
-  onEdit: (room: RoomCardData) => void;
-};
+export interface roomCardProps extends RoomDetails {
+  onEdit: (room: RoomDetails) => void;
+}

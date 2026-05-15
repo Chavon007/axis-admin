@@ -2,7 +2,7 @@ import type { RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import { IoIosAdd } from "react-icons/io";
 
-function Navbar({ activeTab }: { activeTab: string }) {
+function Navbar({ activeTab, onAddRoom }: { activeTab: string, onAddRoom: () => void }) {
   let date = new Date().toLocaleString();
   const user = useSelector((state: RootState) => state.auth.user);
   if (activeTab === "Overview")
@@ -37,7 +37,7 @@ function Navbar({ activeTab }: { activeTab: string }) {
           <button className="bg-neutral-900  p-2 w-20 rounded border border-amber-50 hover:bg-neutral-500 cursor-pointer">
             Sort
           </button>
-          <button className="flex items-center bg-neutral-900  justify-center p-2 w-30 rounded border border-amber-50 hover:bg-neutral-500 cursor-pointer">
+          <button onClick={onAddRoom} className="flex items-center bg-neutral-900  justify-center p-2 w-30 rounded border border-amber-50 hover:bg-neutral-500 cursor-pointer">
             <span>
               <IoIosAdd />
             </span>

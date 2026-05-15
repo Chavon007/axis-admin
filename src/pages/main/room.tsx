@@ -4,9 +4,16 @@ import RoomFilter from "../../components/roomFilter";
 import { FcEmptyFilter } from "react-icons/fc";
 import type { RoomDetails } from "../../types/room";
 import RoomForm from "../../components/roomForm";
-const adminRoomSeedData = [
+
+const adminRoomSeedData: RoomDetails[] = [
   {
-    roomId: "bp-dlx-1",
+    id: "bp-dlx-1",
+    hotel_id: "hotel-001",
+    name: "Deluxe Suite 701",
+    floor: 7,
+    size: "52 sqm",
+    maxGuests: 2,
+    beds: "1 King Bed",
     roomType: "deluxe",
     status: "available",
     amount: "₦125,000",
@@ -30,7 +37,13 @@ const adminRoomSeedData = [
     ],
   },
   {
-    roomId: "bp-dlx-2",
+    id: "bp-dlx-2",
+    hotel_id: "hotel-001",
+    name: "Deluxe Suite 702",
+    floor: 7,
+    size: "52 sqm",
+    maxGuests: 2,
+    beds: "1 King Bed",
     roomType: "deluxe",
     status: "occupied",
     amount: "₦125,000",
@@ -53,7 +66,13 @@ const adminRoomSeedData = [
     ],
   },
   {
-    roomId: "bp-dlx-3",
+    id: "bp-dlx-3",
+    hotel_id: "hotel-001",
+    name: "Deluxe Suite 703",
+    floor: 7,
+    size: "52 sqm",
+    maxGuests: 2,
+    beds: "1 King Bed",
     roomType: "deluxe",
     status: "maintenance",
     amount: "₦125,000",
@@ -74,7 +93,13 @@ const adminRoomSeedData = [
     ],
   },
   {
-    roomId: "bp-sdlx-4",
+    id: "bp-sdlx-4",
+    hotel_id: "hotel-001",
+    name: "Semi-Deluxe Room 401",
+    floor: 4,
+    size: "38 sqm",
+    maxGuests: 2,
+    beds: "1 Queen Bed",
     roomType: "semi-deluxe",
     status: "available",
     amount: "₦85,000",
@@ -96,7 +121,13 @@ const adminRoomSeedData = [
     ],
   },
   {
-    roomId: "bp-sdlx-5",
+    id: "bp-sdlx-5",
+    hotel_id: "hotel-001",
+    name: "Semi-Deluxe Room 402",
+    floor: 4,
+    size: "38 sqm",
+    maxGuests: 2,
+    beds: "1 Queen Bed",
     roomType: "semi-deluxe",
     status: "occupied",
     amount: "₦85,000",
@@ -117,7 +148,13 @@ const adminRoomSeedData = [
     ],
   },
   {
-    roomId: "bp-sdlx-6",
+    id: "bp-sdlx-6",
+    hotel_id: "hotel-001",
+    name: "Semi-Deluxe Room 403",
+    floor: 4,
+    size: "38 sqm",
+    maxGuests: 2,
+    beds: "1 Queen Bed",
     roomType: "semi-deluxe",
     status: "maintenance",
     amount: "₦85,000",
@@ -138,7 +175,13 @@ const adminRoomSeedData = [
     ],
   },
   {
-    roomId: "bp-std-7",
+    id: "bp-std-7",
+    hotel_id: "hotel-001",
+    name: "Standard Room 201",
+    floor: 2,
+    size: "24 sqm",
+    maxGuests: 2,
+    beds: "1 Double Bed",
     roomType: "standard",
     status: "available",
     amount: "₦55,000",
@@ -158,7 +201,13 @@ const adminRoomSeedData = [
     ],
   },
   {
-    roomId: "bp-std-8",
+    id: "bp-std-8",
+    hotel_id: "hotel-001",
+    name: "Standard Room 202",
+    floor: 2,
+    size: "24 sqm",
+    maxGuests: 2,
+    beds: "1 Double Bed",
     roomType: "standard",
     status: "available",
     amount: "₦55,000",
@@ -178,7 +227,13 @@ const adminRoomSeedData = [
     ],
   },
   {
-    roomId: "bp-std-9",
+    id: "bp-std-9",
+    hotel_id: "hotel-001",
+    name: "Standard Room 203",
+    floor: 2,
+    size: "24 sqm",
+    maxGuests: 2,
+    beds: "1 Double Bed",
     roomType: "standard",
     status: "occupied",
     amount: "₦55,000",
@@ -199,7 +254,13 @@ const adminRoomSeedData = [
     ],
   },
   {
-    roomId: "bp-std-10",
+    id: "bp-std-10",
+    hotel_id: "hotel-001",
+    name: "Standard Room 204",
+    floor: 2,
+    size: "24 sqm",
+    maxGuests: 2,
+    beds: "1 Double Bed",
     roomType: "standard",
     status: "maintenance",
     amount: "₦55,000",
@@ -220,23 +281,23 @@ const adminRoomSeedData = [
   },
 ];
 
-export function Rooms() {
+interface RoomProps {
+  showForm: boolean;
+  setShowForm: (val: boolean) => void;
+  selectedRoom: RoomDetails | null;
+  mode: "Add" | "Edit";
+  onEdit: (room: RoomDetails) => void;
+}
+
+export function Rooms({
+  showForm,
+  setShowForm,
+  selectedRoom,
+  mode,
+  onEdit,
+}: RoomProps) {
   const [activeFilter, setActiveFilter] = useState("All");
-  const [showForm, setShowForm] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState<RoomDetails | null>(null);
-  const [mode, setMode] = useState<"Add" | "Edit">("Add");
 
-  const handleEdit = (room: RoomDetails) => {
-    setSelectedRoom(room);
-    setMode("Edit");
-    setShowForm(true);
-  };
-
-  const handleAdd = () => {
-    setSelectedRoom(null);
-    setMode("Add");
-    setShowForm(true);
-  };
   const handleRoomFilter = adminRoomSeedData?.filter((r) =>
     activeFilter === "All"
       ? true
@@ -261,14 +322,17 @@ export function Rooms() {
           </div>
         ) : (
           handleRoomFilter?.map((rooms) => (
-            <RoomCard key={rooms.roomId} {...rooms} onEdit={handleEdit} />
+            <RoomCard key={rooms.id} {...rooms} onEdit={onEdit} />
           ))
         )}
       </section>
 
-
-      {showForm &&(
-        <RoomForm mode={mode} roomData={selectedRoom ?? undefined} onClose={() => setShowForm(false)} />
+      {showForm && (
+        <RoomForm
+          mode={mode}
+          roomData={selectedRoom ?? undefined}
+          onClose={() => setShowForm(false)}
+        />
       )}
     </div>
   );
