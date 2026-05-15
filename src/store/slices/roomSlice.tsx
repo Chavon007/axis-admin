@@ -27,7 +27,7 @@ export const saveRooomToDb = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(roomData),
+        body: JSON.stringify({ roomData }),
       });
 
       const data = await sendData.json();
@@ -51,7 +51,7 @@ export const updateRoomToDb = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(roomData),
+        body: JSON.stringify({ roomData }),
       });
 
       const data = await updateData.json();

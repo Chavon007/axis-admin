@@ -14,13 +14,15 @@ export interface createHotel {
 }
 
 export interface fetchBookings {
+  id: string;
   bookingId: string;
   guest: string;
+  guestEmail: string;
+  guestPhone: string;
   room: string;
-  nights: string;
+  roomType: string;
   amount: string;
-  status: string;
-  action: string;
+  status: "pending" | "confirmed" | "checked-in" | "checked-out" | "cancelled";
   checkedIn: string;
   checkedOut: string;
 }
