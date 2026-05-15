@@ -41,36 +41,27 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
     photo: roomData?.photo ?? [],
   });
 
-  //separate state for amenities checkboxes
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
-    roomData?.amenities ?? []
+    roomData?.amenities ?? [],
   );
-
-  // separate state for image files (just for preview)
   const [images, setImages] = useState<File[]>([]);
-
   const [validationError, setValidationError] = useState("");
 
-  //  simple toggle — if already in list remove it, if not add it
   const handleAmenityToggle = (amenity: string) => {
     setSelectedAmenities((prev) =>
       prev.includes(amenity)
         ? prev.filter((a) => a !== amenity)
-        : [...prev, amenity]
+        : [...prev, amenity],
     );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!formData.amount || !formData.description || !formData.id) {
       setValidationError("Please fill all required fields");
       return;
     }
-
-    //  merge selectedAmenities into formData before submitting
     const finalData = { ...formData, amenities: selectedAmenities };
-
     if (mode === "Add") {
       await addRoom(finalData);
     } else {
@@ -80,79 +71,159 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <section>
-          <div>
-            <h4>{mode === "Add" ? "Add New Room" : "Edit Room"}</h4>
-            <IoIosClose onClick={onClose} />
+    <div className="h-auto pb-6 w-[95%] mx-auto mt-2">
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+        {/* HEADER */}
+        <section className="border bg-neutral-900 rounded border-amber-100 p-2">
+          <div className="flex justify-between items-center p-3">
+            <h4 className="text-sm font-lato font-bold text-amber-50">
+              {mode === "Add" ? "Add New Room" : "Edit Room"}
+            </h4>
+            <IoIosClose
+              onClick={onClose}
+              className="text-2xl text-amber-50 cursor-pointer hover:text-amber-400 transition"
+            />
           </div>
         </section>
 
-        <section>
-          <label>
-            Room Id
-            <input
-              value={formData.id}
-              placeholder="bp-dlx-1"
-              onChange={(e) => setFormData({ ...formData, id: e.target.value })}
-            />
-          </label>
-          <label>
-            Floor
-            <input
-              type="number"
-              value={formData.floor}
-              onChange={(e) =>
-                setFormData({ ...formData, floor: Number(e.target.value) })
-              }
-            />
-          </label>
-        </section>
+        {/* ROOM INFO */}
+        <section className="border bg-neutral-900 rounded border-amber-100 py-5 px-2">
+          <h4 className="text-sm font-lato font-bold text-amber-50 border-b p-3">
+            Room Information
+          </h4>
 
-        <section>
-          <label>
-            Room Type
-            <select
-              value={formData.roomType}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  roomType: e.target.value as RoomDetails["roomType"],
-                })
-              }
-            >
-              <option value="deluxe">Deluxe</option>
-              <option value="semi-deluxe">Semi-Deluxe</option>
-              <option value="standard">Standard</option>
-            </select>
-          </label>
-          <label>
-            Max Guests
-            <input
-              type="number"
-              value={formData.maxGuests}
-              onChange={(e) =>
-                setFormData({ ...formData, maxGuests: Number(e.target.value) })
-              }
-            />
-          </label>
-        </section>
+          <div className="flex justify-between items-center">
+            <label className="w-[50%] p-3 flex flex-col gap-2">
+              <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+                Room ID
+              </h5>
+              <input
+                className="p-2 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
+                value={formData.id}
+                placeholder="bp-dlx-1"
+                onChange={(e) =>
+                  setFormData({ ...formData, id: e.target.value })
+                }
+              />
+            </label>
+            <label className="w-[50%] p-3 flex flex-col gap-2">
+              <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+                Room Name
+              </h5>
+              <input
+                className="p-2 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
+                value={formData.name}
+                placeholder="Deluxe Suite 701"
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+              />
+            </label>
+          </div>
 
-        <section>
-          <label>
-            Price / night
-            <input
-              type="text"
-              value={formData.amount}
-              onChange={(e) =>
-                setFormData({ ...formData, amount: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            Status
+          <div className="flex justify-between items-center">
+            <label className="w-[50%] p-3 flex flex-col gap-2">
+              <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+                Floor
+              </h5>
+              <input
+                className="p-2 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
+                type="number"
+                value={formData.floor}
+                onChange={(e) =>
+                  setFormData({ ...formData, floor: Number(e.target.value) })
+                }
+              />
+            </label>
+            <label className="w-[50%] p-3 flex flex-col gap-2">
+              <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+                Size
+              </h5>
+              <input
+                className="p-2 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
+                value={formData.size}
+                placeholder="52 sqm"
+                onChange={(e) =>
+                  setFormData({ ...formData, size: e.target.value })
+                }
+              />
+            </label>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <label className="w-[50%] p-3 flex flex-col gap-2">
+              <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+                Room Type
+              </h5>
+              <select
+                className="p-2 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
+                value={formData.roomType}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    roomType: e.target.value as RoomDetails["roomType"],
+                  })
+                }
+              >
+                <option value="deluxe">Deluxe</option>
+                <option value="semi-deluxe">Semi-Deluxe</option>
+                <option value="standard">Standard</option>
+              </select>
+            </label>
+            <label className="w-[50%] p-3 flex flex-col gap-2">
+              <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+                Beds
+              </h5>
+              <input
+                className="p-2 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
+                value={formData.beds}
+                placeholder="1 King Bed"
+                onChange={(e) =>
+                  setFormData({ ...formData, beds: e.target.value })
+                }
+              />
+            </label>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <label className="w-[50%] p-3 flex flex-col gap-2">
+              <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+                Max Guests
+              </h5>
+              <input
+                className="p-2 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
+                type="number"
+                value={formData.maxGuests}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    maxGuests: Number(e.target.value),
+                  })
+                }
+              />
+            </label>
+            <label className="w-[50%] p-3 flex flex-col gap-2">
+              <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+                Price / Night
+              </h5>
+              <input
+                className="p-2 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
+                type="text"
+                value={formData.amount}
+                placeholder="₦125,000"
+                onChange={(e) =>
+                  setFormData({ ...formData, amount: e.target.value })
+                }
+              />
+            </label>
+          </div>
+
+          <label className="w-full py-2 px-3 flex flex-col gap-2">
+            <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+              Status
+            </h5>
             <select
+              className="p-2 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
               value={formData.status}
               onChange={(e) =>
                 setFormData({
@@ -166,13 +237,15 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
               <option value="maintenance">Maintenance</option>
             </select>
           </label>
-        </section>
 
-        <section>
-          <label>
-            Description
+          <label className="w-full py-2 px-3 flex flex-col gap-2">
+            <h5 className="text-xs font-lato font-light italic text-amber-50 ml-1">
+              Description
+            </h5>
             <textarea
+              className="p-2 h-25 focus:outline-none text-white text-xs rounded bg-neutral-600 font-lato"
               value={formData.description}
+              placeholder="Room description..."
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
@@ -180,60 +253,94 @@ function RoomForm({ mode, roomData, onClose }: RoomFormProps) {
           </label>
         </section>
 
-        {/*  Amenities — simple toggle */}
-        <section>
-          <h3>Amenities</h3>
-          <div>
+        {/* AMENITIES */}
+        <section className="border bg-neutral-900 rounded border-amber-100 py-5 px-2">
+          <h4 className="text-sm font-lato font-bold text-amber-50 border-b p-3">
+            Amenities
+          </h4>
+          <div className="grid grid-cols-3 gap-3 p-3">
             {AMENITIES_LIST.map((amenity) => (
-              <label key={amenity}>
+              <label
+                key={amenity}
+                className="flex items-center gap-2 cursor-pointer"
+              >
                 <input
                   type="checkbox"
+                  className="accent-amber-400 cursor-pointer"
                   checked={selectedAmenities.includes(amenity)}
                   onChange={() => handleAmenityToggle(amenity)}
                 />
-                <span>{amenity}</span>
+                <span className="text-xs font-lato text-gray-300">
+                  {amenity}
+                </span>
               </label>
             ))}
           </div>
         </section>
 
-        {/* Photos — files just for preview, not stored in formData */}
-        <section>
-          <label>
+        {/* PHOTOS */}
+        <section className="border bg-neutral-900 rounded border-amber-100 py-5 px-2">
+          <h4 className="text-sm font-lato font-bold text-amber-50 border-b p-3">
             Room Photos
-            <div>
-              <CiImageOn size={24} />
-              <p>Upload room photos</p>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={(e) => {
-                  const files = Array.from(e.target.files || []);
-                  setImages((prev) => [...prev, ...files]); // ✅ preview only
-                }}
-              />
-            </div>
+          </h4>
+          <label className="flex flex-col items-center justify-center cursor-pointer h-24 text-white font-lato">
+            <CiImageOn size={24} />
+            <p className="text-sm">Upload room photos</p>
+            <small className="text-gray-400 text-xs">
+              You can upload multiple photos
+            </small>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const files = Array.from(e.target.files || []);
+                setImages((prev) => [...prev, ...files]);
+              }}
+            />
           </label>
 
-          <div>
-            {images.map((img, index) => (
-              <img key={index} src={URL.createObjectURL(img)} alt={`preview ${index}`} />
-            ))}
-          </div>
+          {images.length > 0 && (
+            <div className="flex flex-wrap gap-2 px-3 mt-2">
+              {images.map((img, index) => (
+                <img
+                  key={index}
+                  src={URL.createObjectURL(img)}
+                  alt={`preview ${index}`}
+                  className="w-20 h-20 object-cover rounded border border-neutral-600"
+                />
+              ))}
+            </div>
+          )}
         </section>
 
-        <section>
-          <button type="button" onClick={onClose}>
+        {/* BUTTONS */}
+        <section className="flex gap-2 justify-end items-center">
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-xs font-lato font-light cursor-pointer hover:scale-105 hover:bg-neutral-700 w-30 bg-neutral-400 p-2 rounded text-white"
+          >
             Cancel
           </button>
-          <button type="submit">
-            {loading ? "Saving..." : mode === "Add" ? "Add Room" : "Update Room"}
+          <button
+            type="submit"
+            disabled={loading}
+            className="text-xs font-lato font-light cursor-pointer hover:scale-105 hover:bg-neutral-400 w-30 bg-neutral-700 p-2 rounded text-white"
+          >
+            {loading
+              ? "Saving..."
+              : mode === "Add"
+                ? "Add Room"
+                : "Update Room"}
           </button>
         </section>
 
-        {validationError && <p>{validationError}</p>}
-        {error && <p>{error}</p>}
+        {validationError && (
+          <p className="text-red-500 text-center text-xs">{validationError}</p>
+        )}
+        {error && <p className="text-red-500 text-center text-xs">{error}</p>}
       </form>
     </div>
   );

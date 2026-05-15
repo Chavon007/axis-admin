@@ -303,8 +303,10 @@ export function Rooms({
       ? true
       : r.status === activeFilter.trim().toLowerCase(),
   );
+
   return (
-    <div className=" min-h-screen w-[90%] mx-auto h-auto flex flex-col gap-2 p-2">
+    <div className="min-h-screen w-[90%] mx-auto h-auto flex flex-col gap-4 p-2">
+      {/* FILTER */}
       <section className="p-2 max-w-135">
         <RoomFilter
           setActiveFilter={setActiveFilter}
@@ -312,13 +314,28 @@ export function Rooms({
         />
       </section>
 
-      <section className=" grid grid-cols-3 gap-3">
+      {/* ROOM COUNT */}
+      <section className="px-2">
+        <p className="text-xs font-lato text-gray-400">
+          Showing{" "}
+          <span className="text-amber-400 font-semibold">
+            {handleRoomFilter?.length}
+          </span>{" "}
+          {activeFilter === "All" ? "total" : activeFilter.toLowerCase()} rooms
+        </p>
+      </section>
+
+      {/* ROOM CARDS */}
+      <section className="grid grid-cols-3 gap-4">
         {handleRoomFilter?.length === 0 ? (
-          <div className="">
-            <small>
-              <FcEmptyFilter />
+          <div className="col-span-3 flex flex-col items-center justify-center gap-3 py-20 text-center">
+            <FcEmptyFilter size={48} />
+            <p className="text-gray-400 font-lato text-sm">
+              No rooms found for this filter.
+            </p>
+            <small className="text-gray-600 text-xs font-lato">
+              Try a different filter or add a new room.
             </small>
-            <p>You haven't added any room yet. Add rooms</p>
           </div>
         ) : (
           handleRoomFilter?.map((rooms) => (
@@ -327,14 +344,26 @@ export function Rooms({
         )}
       </section>
 
+      {/* MODAL */}
       {showForm && (
-        <RoomForm
-          mode={mode}
-          roomData={selectedRoom ?? undefined}
-          onClose={() => setShowForm(false)}
-        />
+        <div
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center"
+          onClick={(e) => {
+            // close modal when clicking outside
+            if (e.target === e.currentTarget) setShowForm(false);
+          }}
+        >
+          <div className="bg-neutral-950 w-[90%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border border-amber-100/20 shadow-[0_0_40px_rgba(253,230,138,0.1)]">
+            <RoomForm
+              mode={mode}
+              roomData={selectedRoom ?? undefined}
+              onClose={() => setShowForm(false)}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
 }
+
 export default Rooms;
