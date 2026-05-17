@@ -5,6 +5,7 @@ import Overview from "../main/overview";
 import { Settings } from "../main/settings";
 import Bookings from "../main/bookings";
 import Rooms from "../main/room";
+import VerifyGuest from "../main/verifyGuest";
 import type { RoomDetails } from "../../types/room";
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("Overview");
@@ -48,6 +49,7 @@ function Dashboard() {
               setShowForm={setShowForm}
             />
           )}
+          {activeTab === "Verify Guest" && <VerifyGuest />}
         </main>
       </section>
     </div>

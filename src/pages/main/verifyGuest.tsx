@@ -15,7 +15,7 @@ function VerifyGuest() {
     if (found) setFoundBooking(found);
   };
   return (
-    <div>
+    <div className="bg-red-500">
       <section>
         <div>
           <QRScanner onScan={handleSearch} />
