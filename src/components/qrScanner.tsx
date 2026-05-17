@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
-import { MdQrCodeScanner } from "react-icons/md";
 import { FiCamera } from "react-icons/fi";
 
 interface QRScannerProps {
@@ -12,71 +11,111 @@ function QRScanner({ onScan }: QRScannerProps) {
   const [isScanning, setIsScanning] = useState(false);
 
   useEffect(() => {
-    if (!isScanning) return;
+    let mounted = true;
 
-    const timeout = setTimeout(() => {
-      const element = document.getElementById("qr-reader");
+    const startScanner = async () => {
+      if (!isScanning) return;
 
-      if (!element) return;
+      try {
+        // prevent duplicate scanner
+        if (!scannerRef.current) {
+          scannerRef.current = new Html5Qrcode("qr-reader");
+        }
 
-      scannerRef.current = new Html5Qrcode("qr-reader");
-
-      scannerRef.current
-        .start(
-          { facingMode: "environment" },
+        await scannerRef.current.start(
+          {
+            facingMode: "environment",
+          },
           {
             fps: 10,
-            qrbox: 250,
+            qrbox: {
+              width: 250,
+              height: 250,
+            },
+            aspectRatio: 1,
           },
           async (decodedText) => {
             onScan(decodedText);
 
-            await scannerRef.current?.stop();
+            if (scannerRef.current) {
+              await scannerRef.current.stop();
+            }
 
-            setIsScanning(false);
+            if (mounted) {
+              setIsScanning(false);
+            }
           },
-          () => {}
-        )
-        .catch((err) => {
-          console.error(err);
-        });
-    }, 100);
+          () => {},
+        );
+      } catch (error) {
+        console.error("Scanner failed to start:", error);
+      }
+    };
+
+    startScanner();
 
     return () => {
-      clearTimeout(timeout);
+      mounted = false;
 
-      scannerRef.current
-        ?.stop()
-        .catch(() => {});
+      if (scannerRef.current?.isScanning) {
+        scannerRef.current
+          .stop()
+          .then(() => {
+            scannerRef.current?.clear();
+          })
+          .catch(() => {});
+      }
     };
   }, [isScanning, onScan]);
 
+  const handleToggleScanner = async () => {
+    if (isScanning) {
+      try {
+        await scannerRef.current?.stop();
+        await scannerRef.current?.clear();
+      } catch (error) {
+        console.error(error);
+      }
+
+      setIsScanning(false);
+    } else {
+      setIsScanning(true);
+    }
+  };
+
   return (
-    <div>
-      <div>
-        <h3>Scan Guest QR Code</h3>
-        <MdQrCodeScanner />
-      </div>
+    <div className="flex flex-col gap-4 justify-center">
+      <h3 className="text-sm font-lato font-bold p-2 border-b border-amber-100 text-amber-50">
+        Scan Guest QR Code
+      </h3>
 
       {isScanning && (
-        <div className="relative rounded-xl overflow-hidden border-2 border-amber-400/50 shadow-[0_0_20px_rgba(253,230,138,0.15)]">
+        <div className="relative self-center rounded-2xl overflow-hidden border-2 border-amber-400/50 shadow-[0_0_20px_rgba(253,230,138,0.15)]">
+          {/* scanner corners */}
           <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-amber-400 rounded-tl-md z-10" />
           <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-amber-400 rounded-tr-md z-10" />
           <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-amber-400 rounded-bl-md z-10" />
           <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-amber-400 rounded-br-md z-10" />
 
-          <div id="qr-reader" style={{ width: "300px", height: "300px" }} />
+          {/* scanner */}
+          <div id="qr-reader" className="w-75 h-75" />
         </div>
       )}
 
-      <div className="flex items-center gap-2 text-gray-400">
-        <button onClick={() => setIsScanning((prev) => !prev)}>
-          <FiCamera className="text-amber-400" />
-          {isScanning ? "Stop Camera" : "Start Camera"}
+      <div className="flex flex-col justify-center items-center gap-3">
+        <button
+          onClick={handleToggleScanner}
+          className="flex flex-col items-center justify-center gap-2 w-32 h-32 rounded-2xl bg-amber-400 hover:bg-amber-500 transition-all duration-300 text-black font-bold shadow-lg"
+        >
+          <FiCamera className="text-5xl" />
+
+          <span className="text-sm font-lato">
+            {isScanning ? "Stop Camera" : "Start Camera"}
+          </span>
         </button>
 
-        <small className="text-xs font-lato">
-          Point camera at guest's QR code
+        <small className="text-xs font-lato text-gray-400">
+          Point camera at guest&apos;s QR code
         </small>
       </div>
     </div>
