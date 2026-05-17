@@ -9,7 +9,7 @@ export const Hotel = async ({
   image,
   rating,
   email,
-  visibilityy,
+  visibility,
   bookingApproval,
   created_by,
 }: createHotel) => {

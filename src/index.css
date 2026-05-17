@@ -6,3 +6,16 @@
   --font-montserra: "Montserrat", sans-serif;
   --font-lato: "Lato", sans-serif;
 }
+
+#qr-reader {
+  border: none !important;
+}
+
+#qr-reader img {
+  display: none !important;
+}
+
+#qr-reader__scan_region {
+  display: flex;
+  justify-content: center;
+}
