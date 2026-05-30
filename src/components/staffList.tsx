@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import useStaff from "../hooks/staffHooks";
 
 function StaffList() {
@@ -9,22 +8,22 @@ function StaffList() {
     fetchStaff();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p className="text-xs text-neutral-400 font-lato py-6 text-center">Loading...</p>;
+  if (error) return <p className="text-xs text-red-400 font-lato py-6 text-center">{error}</p>;
   if (staffList.length === 0)
-    return <p>No staff members yet. Invite one to get started.</p>;
+    return <p className="text-xs text-neutral-400 font-lato py-6 text-center">No staff members yet. Invite one to get started.</p>;
 
   return (
     <>
       {staffList.map((staff) => (
-        <tr key={staff.email}>
-          <td>{staff.firstName}</td>
-          <td>{staff.email}</td>
-          <td>{staff.role}</td>
-          <td>{staff.permission}</td>
-          <td>{staff.last_login}</td>
-          <td>{staff.status}</td>
-          <td>{staff.action}</td>
+        <tr key={staff.email} className="border-b border-neutral-800 hover:bg-neutral-800 transition-colors">
+          <td className="text-xs text-amber-50 font-lato px-4 py-3">{staff.firstName}</td>
+          <td className="text-xs text-neutral-400 font-lato px-4 py-3">{staff.email}</td>
+          <td className="text-xs text-neutral-400 font-lato px-4 py-3 capitalize">{staff.role}</td>
+          <td className="text-xs text-neutral-400 font-lato px-4 py-3">{staff.permission}</td>
+          <td className="text-xs text-neutral-400 font-lato px-4 py-3">{staff.last_login}</td>
+          <td className="text-xs text-neutral-400 font-lato px-4 py-3">{staff.status}</td>
+          <td className="text-xs text-amber-400 font-lato px-4 py-3">{staff.action}</td>
         </tr>
       ))}
     </>

@@ -7,6 +7,7 @@ import Bookings from "../main/bookings";
 import Rooms from "../main/room";
 import VerifyGuest from "../main/verifyGuest";
 import type { RoomDetails } from "../../types/room";
+import Staff from "../main/staff";
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("Overview");
 
@@ -50,6 +51,7 @@ function Dashboard() {
             />
           )}
           {activeTab === "Verify Guest" && <VerifyGuest />}
+          {activeTab === "Staff" && <Staff />}
         </main>
       </section>
     </div>
